@@ -1,3 +1,4 @@
+// this module is for printing the info
 const info = (...params) => {
   console.log(...params)
 }
