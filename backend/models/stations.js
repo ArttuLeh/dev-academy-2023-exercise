@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
-const stationsSchema = new mongoose.Schema({})
+const stationsSchema = new mongoose.Schema({
+  ID: Number,
+})
 
 stationsSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -8,4 +10,4 @@ stationsSchema.set('toJSON', {
     delete returnedObject._id
   },
 })
-module.exports = mongoose.model('Stations', stationsSchema)
+module.exports = mongoose.model('Station', stationsSchema)
