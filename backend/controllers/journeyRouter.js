@@ -17,13 +17,12 @@ journeyRouter.get('/', async (req, res) => {
   }
 })
 journeyRouter.get('/:id', async (req, res) => {
-  const id = req.params.id
-  const departureCount = await Journeys.countDocuments({
-    Departure_station_id: id,
-  })
-  const returnCount = await Journeys.countDocuments({
-    Return_station_id: id,
-  })
-  res.json({ departureCount, returnCount })
+  try {
+    const data = await Journeys.findById(req.params.id)
+    res.json(data)
+  } catch (error) {
+    console.error(error.message)
+    res.status(404).end()
+  }
 })
 module.exports = journeyRouter
