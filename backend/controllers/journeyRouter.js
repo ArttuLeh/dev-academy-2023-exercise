@@ -11,7 +11,11 @@ journeyRouter.get('/', async (req, res) => {
 
     const count = await Journeys.count()
 
-    res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page })
+    res.json({
+      data,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    })
   } catch (error) {
     console.error(error.message)
   }
