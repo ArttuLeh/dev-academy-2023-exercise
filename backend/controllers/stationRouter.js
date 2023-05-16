@@ -11,7 +11,11 @@ stationsRouter.get('/', async (req, res) => {
       .exec()
 
     const count = await Station.count()
-    res.json({ data, totalPages: Math.ceil(count / limit), currentPage: page })
+    res.json({
+      data,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    })
   } catch (error) {
     console.error(error.message)
   }
@@ -19,14 +23,61 @@ stationsRouter.get('/', async (req, res) => {
 
 stationsRouter.get('/:id', async (req, res) => {
   try {
-    const data = await Station.findOne({ ID: req.params.id })
+    const data = await Station.findOne({ _id: req.params.id })
+
     const departureStationCount = await Journey.countDocuments({
-      Departure_station_id: req.params.id,
+      Departure_station_id: data.ID,
     })
+
     const returnStationCount = await Journey.countDocuments({
-      Return_station_id: req.params.id,
+      Return_station_id: data.ID,
     })
-    res.json({ data, departureStationCount, returnStationCount })
+
+    const departureStationDistance = await Journey.aggregate([
+      {
+        $match: {
+          Departure_station_id: data.ID,
+        },
+      },
+      {
+        $group: {
+          _id: '$Departure_station_id',
+          avg: { $avg: '$Covered_distance_m' },
+        },
+      },
+      {
+        $project: {
+          _id: '$_id',
+          avgCoveredDistance: { $ceil: '$avg' },
+        },
+      },
+    ])
+    const returnStationDistance = await Journey.aggregate([
+      {
+        $match: {
+          Return_station_id: data.ID,
+        },
+      },
+      {
+        $group: {
+          _id: '$Return_station_id',
+          avg: { $avg: '$Covered_distance_m' },
+        },
+      },
+      {
+        $project: {
+          _id: '$_id',
+          avgCoveredDistance: { $ceil: '$avg' },
+        },
+      },
+    ])
+
+    res.json({
+      data,
+      departureStationDistance,
+      returnStationDistance,
+      stationsCount: { departureStationCount, returnStationCount },
+    })
   } catch (error) {
     console.error(error.message)
     res.status(404).end()
