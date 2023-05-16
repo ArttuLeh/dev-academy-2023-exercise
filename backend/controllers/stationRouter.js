@@ -71,9 +71,49 @@ stationsRouter.get('/:id', async (req, res) => {
         },
       },
     ])
+    const sortReturnStation = await Journey.aggregate([
+      {
+        $match: {
+          Departure_station_id: data.ID,
+        },
+      },
+      {
+        $group: {
+          _id: '$Return_station_id',
+          count: { $sum: '$Return_station_id' },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ])
+    const sortDepartureStation = await Journey.aggregate([
+      {
+        $match: {
+          Return_station_id: data.ID,
+        },
+      },
+      {
+        $group: {
+          _id: '$Departure_station_id',
+          count: { $sum: '$Departure_station_id' },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ])
 
     res.json({
       data,
+      sortDepartureStation,
+      sortReturnStation,
       departureStationDistance,
       returnStationDistance,
       stationsCount: { departureStationCount, returnStationCount },
