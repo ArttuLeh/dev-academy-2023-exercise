@@ -1,5 +1,5 @@
 const stationsRouter = require('express').Router()
-const Station = require('../models/stations')
+const Station = require('../models/station')
 const Journey = require('../models/journey')
 
 stationsRouter.get('/', async (req, res) => {
@@ -80,7 +80,7 @@ stationsRouter.get('/:id', async (req, res) => {
       {
         $group: {
           _id: '$Return_station_id',
-          count: { $sum: '$Return_station_id' },
+          count: { $sum: 1 },
         },
       },
       {
@@ -99,7 +99,7 @@ stationsRouter.get('/:id', async (req, res) => {
       {
         $group: {
           _id: '$Departure_station_id',
-          count: { $sum: '$Departure_station_id' },
+          count: { $sum: 1 },
         },
       },
       {
