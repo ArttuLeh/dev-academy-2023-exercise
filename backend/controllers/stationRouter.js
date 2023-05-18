@@ -80,6 +80,7 @@ stationsRouter.get('/:id', async (req, res) => {
       {
         $group: {
           _id: '$Return_station_id',
+          stationId: { $first: '$_id' },
           count: { $sum: 1 },
         },
       },
@@ -99,6 +100,7 @@ stationsRouter.get('/:id', async (req, res) => {
       {
         $group: {
           _id: '$Departure_station_id',
+          stationName: { $first: '$_id' },
           count: { $sum: 1 },
         },
       },
