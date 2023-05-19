@@ -2,9 +2,10 @@ const journeyRouter = require('express').Router()
 const Journeys = require('../models/journey')
 
 journeyRouter.get('/', async (req, res) => {
-  const { page = 1, limit = 40 } = req.query
+  const { page = 1, limit = 40, sort = '' } = req.query
   try {
     const data = await Journeys.find({})
+      .sort(sort)
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec()
