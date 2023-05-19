@@ -6,7 +6,6 @@ const getAll = async (currentPage) => {
   return request.data
 }
 const getStation = async (id) => {
-  console.log('id', id)
   const request = await axios.get(`${baseUrl}/${id}`)
   return request.data
 }

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import journeyService from '../services/journeys'
 
-const slice = createSlice({
+const journeysSlice = createSlice({
   name: 'journeys',
   initialState: [],
   reducers: {
@@ -17,5 +17,5 @@ export const initializeJourneys = (currentPage) => {
     dispatch(setJourneys(data))
   }
 }
-export const { setJourneys } = slice.actions
-export default slice.reducer
+export const { setJourneys } = journeysSlice.actions
+export default journeysSlice.reducer

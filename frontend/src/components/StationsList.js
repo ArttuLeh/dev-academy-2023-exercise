@@ -1,5 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  Paper,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHead,
+  Stack,
+  Pagination,
+  Box,
+  CircularProgress,
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { initializeStations } from '../reducers/stationsReducer'
 
@@ -9,61 +22,63 @@ const StationList = () => {
   const stations = useSelector(({ stations }) => stations)
 
   useEffect(() => {
-    console.log('use')
     dispatch(initializeStations(currentPage))
   }, [dispatch, currentPage])
 
-  const handlePrevious = () => {
-    setCurrentPage((p) => {
-      if (p === 1) return p
-      return p - 1
-    })
-  }
-
-  const handleNext = () => {
-    setCurrentPage((p) => {
-      if (p === stations.totalPages) return p
-      return p + 1
-    })
+  const handlePageChange = (e, value) => {
+    setCurrentPage(value)
   }
 
   return (
     <div>
       <h2>Helsinki city bike stations</h2>
       {stations.data ? (
-        <div>
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Town</th>
-            <th>ID</th>
-          </tr>
-
-          {stations.data.map((station) => (
-            <tr key={station.id}>
-              <Link to={`/stations/${station.id}`}>
-                <td>{station.Nimi}</td>
-              </Link>
-              <td>{station.Adress}</td>
-              <td>{station.Kaupunki}</td>
-              <td>{station.ID}</td>
-            </tr>
-          ))}
-        </div>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ boxShadow: 2 }}>
+                <TableCell sx={{ fontWeight: 'bold' }}>Station name</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                  Address
+                </TableCell>
+                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                  Station ID
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {stations.data.map((station) => (
+                <TableRow key={station._id} sx={{ boxShadow: 2 }}>
+                  <TableCell>
+                    <Link to={`/stations/${station._id}`}>{station.Nimi}</Link>
+                  </TableCell>
+                  <TableCell align="right">
+                    {station.Osoite} {station.Kaupunki}
+                  </TableCell>
+                  <TableCell align="right">{station.ID}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       ) : (
-        <div>loading..</div>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
       )}
-      <footer>
-        <button disabled={currentPage === 1} onClick={handlePrevious}>
-          previous
-        </button>
-        <button
-          disabled={currentPage === stations.totalPages}
-          onClick={handleNext}
-        >
-          next
-        </button>
-      </footer>
+      <Stack
+        spacing={3}
+        sx={{
+          paddingTop: 2,
+          paddingBottom: 2,
+        }}
+      >
+        <Pagination
+          sx={{ display: 'flex', justifyContent: 'center' }}
+          count={stations.totalPages}
+          onChange={handlePageChange}
+        />
+      </Stack>
     </div>
   )
 }

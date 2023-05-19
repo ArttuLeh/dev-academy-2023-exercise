@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import stationsService from '../services/stations'
+import { toggleLoading } from './loadingReducer'
 
-const slice = createSlice({
-  name: 'stations',
+const stationSlice = createSlice({
+  name: 'station',
   initialState: [],
   reducers: {
     setStation(state, { payload }) {
@@ -12,12 +13,16 @@ const slice = createSlice({
 })
 
 export const getStation = (id) => {
-  console.log(id)
   return async (dispatch) => {
-    const data = await stationsService.getStation(id)
-    console.log('reducer station', data)
-    dispatch(setStation(data))
+    try {
+      dispatch(toggleLoading(false))
+      const data = await stationsService.getStation(id)
+      dispatch(setStation(data))
+      dispatch(toggleLoading(true))
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 }
-export const { setStation } = slice.actions
-export default slice.reducer
+export const { setStation } = stationSlice.actions
+export default stationSlice.reducer
