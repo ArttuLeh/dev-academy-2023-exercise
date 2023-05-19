@@ -3,9 +3,10 @@ const Station = require('../models/station')
 const Journey = require('../models/journey')
 
 stationsRouter.get('/', async (req, res) => {
-  const { page = 1, limit = 40 } = req.query
+  const { page = 1, limit = 40, sort = '' } = req.query
   try {
     const data = await Station.find({})
+      .sort(sort)
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec()
@@ -118,7 +119,8 @@ stationsRouter.get('/:id', async (req, res) => {
       sortReturnStation,
       departureStationDistance,
       returnStationDistance,
-      stationsCount: { departureStationCount, returnStationCount },
+      departureStationCount,
+      returnStationCount,
     })
   } catch (error) {
     console.error(error.message)
