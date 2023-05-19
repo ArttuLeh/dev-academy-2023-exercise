@@ -30,7 +30,7 @@ describe('api tests', () => {
 
       const station = response.body.data[0]
 
-      expect(station.id).toBeDefined()
+      expect(station._id).toBeDefined()
     })
   })
 
@@ -50,7 +50,7 @@ describe('api tests', () => {
 
       const journey = response.body.data[0]
 
-      expect(journey.id).toBeDefined()
+      expect(journey._id).toBeDefined()
     })
   })
 
@@ -60,7 +60,7 @@ describe('api tests', () => {
       const stationToView = stations[0]
 
       const response = await api
-        .get(`/api/stations/${stationToView.id}`)
+        .get(`/api/stations/${stationToView._id}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
@@ -73,14 +73,14 @@ describe('api tests', () => {
       const stationToView = stations[0]
 
       const response = await api
-        .get(`/api/stations/${stationToView.id}`)
+        .get(`/api/stations/${stationToView._id}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      const depStationCount = response.body.stationsCount.departureStationCount
+      const depStationCount = response.body.departureStationCount
       expect(depStationCount).toEqual(2)
 
-      const retStationCount = response.body.stationsCount.returnStationCount
+      const retStationCount = response.body.returnStationCount
       expect(retStationCount).toEqual(2)
     })
     test('the average distance of a journey starting from the station and ending to the station', async () => {
@@ -88,7 +88,7 @@ describe('api tests', () => {
       const stationToView = stations[0]
 
       const response = await api
-        .get(`/api/stations/${stationToView.id}`)
+        .get(`/api/stations/${stationToView._id}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
