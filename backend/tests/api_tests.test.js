@@ -40,7 +40,33 @@ describe('api tests', () => {
         .get('/api/journeys')
         .expect(200)
         .expect('Content-Type', /application\/json/)
-      expect(response.body.data).toHaveLength(helper.initialJourneys.length)
+      expect(response.body.sortedData).toHaveLength(
+        helper.initialJourneys.length
+      )
+    })
+    test('search journeys by departure name', async () => {
+      const response = await api
+        .get('/api/journeys?search=keilalahti')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body.sortedData[0].data).toHaveLength(3)
+    })
+    test('when journeys sort asc', async () => {
+      const response = await api
+        .get('/api/journeys?sortField=Departure_station_id&sortOrder=asc')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body.sortedData[0].Departure_station_id).toBe(9)
+    })
+    test('when journeys sort desc', async () => {
+      const response = await api
+        .get('/api/journeys?sortField=Departure_station_id&sortOrder=desc')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body.sortedData[0].Departure_station_id).toBe(625)
     })
     test('a journey data has field id', async () => {
       const response = await api
@@ -48,7 +74,7 @@ describe('api tests', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      const journey = response.body.data[0]
+      const journey = response.body.sortedData[0]
 
       expect(journey._id).toBeDefined()
     })
@@ -65,7 +91,6 @@ describe('api tests', () => {
         .expect('Content-Type', /application\/json/)
 
       const processedStationToView = JSON.parse(JSON.stringify(stationToView))
-      console.log(processedStationToView)
       expect(response.body.data).toEqual(processedStationToView)
     })
     test('total number of journeys starting from the station and ending to the station', async () => {
