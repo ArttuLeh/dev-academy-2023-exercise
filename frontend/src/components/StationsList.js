@@ -16,16 +16,20 @@ import {
 import { useEffect, useState } from 'react'
 import { initializeStations } from '../reducers/stationsReducer'
 
+// component that lists all the stations
+// using material ui
 const StationList = () => {
   const dispatch = useDispatch()
-  const [currentPage, setCurrentPage] = useState(1)
-  const stations = useSelector(({ stations }) => stations)
+  const [currentPage, setCurrentPage] = useState(1) // state for handling current page
+  const stations = useSelector(({ stations }) => stations) // get the stations data from the store
 
   useEffect(() => {
+    // dispatch the currentpage value to the reducer whenever user change the page
     dispatch(initializeStations(currentPage))
   }, [dispatch, currentPage])
 
   const handlePageChange = (e, value) => {
+    // handle page change and set the value
     setCurrentPage(value)
   }
 
