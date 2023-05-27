@@ -14,13 +14,16 @@ import {
   CircularProgress,
 } from '@mui/material'
 
+// component that show the station information
+// using material ui
 const StationView = () => {
   const dispatch = useDispatch()
-  const { id } = useParams()
-  const station = useSelector(({ station }) => station)
-  const isLoading = useSelector(({ loading }) => loading)
+  const { id } = useParams() // get id value from stationList component
+  const station = useSelector(({ station }) => station) // get the station info from store
+  const isLoading = useSelector(({ loading }) => loading) // loading state for handling loading image
 
   useEffect(() => {
+    // dispatch the id to the reducer everytime whenever id change
     dispatch(getStation(id))
   }, [dispatch, id])
 
@@ -82,14 +85,14 @@ const StationView = () => {
                 <TableCell align="right">
                   {station.sortDepartureStation.map((s) => (
                     <li key={s._id}>
-                      {s.count}, station ID: {s._id}
+                      {s.count}, station Name: {s._id}
                     </li>
                   ))}
                 </TableCell>
                 <TableCell align="right">
                   {station.sortReturnStation.map((s) => (
                     <li key={s._id}>
-                      {s.count}, station ID: {s._id}
+                      {s.count}, station Name: {s._id}
                     </li>
                   ))}
                 </TableCell>
