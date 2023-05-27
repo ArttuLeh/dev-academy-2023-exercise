@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 const stationRouter = require('./controllers/stationRouter')
 const journeyRouter = require('./controllers/journeyRouter')
+const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
@@ -19,8 +20,12 @@ mongoose
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.requestLogger)
 
 app.use('/api/stations', stationRouter)
 app.use('/api/journeys', journeyRouter)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
