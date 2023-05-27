@@ -5,6 +5,8 @@ import JourneysList from './components/JourneysList'
 import StationList from './components/StationsList'
 import StationView from './components/StationView'
 import Home from './components/Home'
+import Notification from './components/Notification'
+import SearchedJourneysData from './components/SearchedJourneysData'
 
 const App = () => {
   return (
@@ -22,11 +24,13 @@ const App = () => {
           </Button>
         </Toolbar>
       </AppBar>
+      <Notification />
       <div>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/stations" element={<StationList />} />
           <Route path="/journeys" element={<JourneysList />} />
+          <Route path="/journeys/search" element={<SearchedJourneysData />} />
           <Route path="/stations/:id" element={<StationView />} />
         </Routes>
       </div>
