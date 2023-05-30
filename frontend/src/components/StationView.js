@@ -33,7 +33,7 @@ const StationView = () => {
 
   const headCell = [
     {
-      id: 'Osoite',
+      id: 'address',
       numeric: false,
       lable: 'Address',
     },
@@ -80,7 +80,9 @@ const StationView = () => {
     return (
       <div>
         <Alert severity="error">
-          <AlertTitle>Information not found</AlertTitle>
+          <AlertTitle>
+            Information not found, try again a different name
+          </AlertTitle>
         </Alert>
       </div>
     )
@@ -89,7 +91,7 @@ const StationView = () => {
     <div>
       {isLoading && station.data ? (
         <TableContainer component={Paper}>
-          <h2>{station.data.Nimi} station information</h2>
+          <h2>{station.data.name} station information</h2>
           <Table>
             <TableHead>
               <TableRow sx={{ boxShadow: 4 }}>
@@ -106,7 +108,7 @@ const StationView = () => {
             </TableHead>
             <TableBody>
               <TableRow sx={{ boxShadow: 4 }}>
-                <TableCell>{station.data.Osoite}</TableCell>
+                <TableCell>{station.data.address}</TableCell>
                 <TableCell align="right">{station.data.ID}</TableCell>
                 <TableCell align="right">
                   {station.departureStationCount}
@@ -118,12 +120,12 @@ const StationView = () => {
                   {(
                     station.departureStationDistance[0].avgCoveredDistance /
                     1000
-                  ).toFixed(1)}
+                  ).toFixed(2)}
                 </TableCell>
                 <TableCell align="right">
                   {(
                     station.returnStationDistance[0].avgCoveredDistance / 1000
-                  ).toFixed(1)}
+                  ).toFixed(2)}
                 </TableCell>
                 <TableCell align="right">
                   {station.sortDepartureStation.map((s) => (
