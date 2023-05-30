@@ -53,7 +53,9 @@ const SearchedJourneysData = ({ journeys, handlePageChange }) => {
     return (
       <div>
         <Alert severity="error">
-          <AlertTitle>Information not found</AlertTitle>
+          <AlertTitle>
+            Information not found, try again a different name
+          </AlertTitle>
         </Alert>
       </div>
     )
