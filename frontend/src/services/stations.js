@@ -2,8 +2,10 @@ import axios from 'axios'
 const baseUrl = '/api/stations'
 
 //axios fetch the data from backend
-const getAll = async (currentPage) => {
-  const request = await axios.get(`${baseUrl}?page=${currentPage}`)
+const getAll = async (currentPage, searchTerm) => {
+  const request = await axios.get(
+    `${baseUrl}?page=${currentPage}&search=${searchTerm}`
+  )
   return request.data
 }
 //fetch the specific station data from backend
