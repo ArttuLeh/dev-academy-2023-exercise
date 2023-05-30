@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { initializeJourneys } from '../reducers/journeyReducer'
 import SearchedJourneysData from './SearchedJourneysData'
@@ -31,7 +31,7 @@ const JourneysList = () => {
     setCurrentPage(value)
   }
 
-  // hande sorting and set the value
+  // hande setting sortfield and sortorder value
   const handleSort = (value) => {
     if ((sortField === '' && sortOrder === '') || sortOrder === 'desc') {
       setSortField(value)
@@ -41,25 +41,25 @@ const JourneysList = () => {
       setSortOrder('desc')
     }
   }
-
-  // handle sort clear
-  const handleClick = () => {
+  // handle setting search value
+  const handleSearch = (event) => {
     setSortField('')
     setSortOrder('')
+    setSearchTerm(event.target.value)
   }
 
   if (searchTerm) {
     // if the search term exist show the details of the searched journeys
     return (
       <div>
-        <h2>Helsinki city bike journeys</h2>
+        <h2>Journeys</h2>
         <Box>
           <TextField
             id="search"
             type="search"
             label="Search departure station by name"
             value={searchTerm}
-            onChange={({ target }) => setSearchTerm(target.value)}
+            onChange={handleSearch}
             sx={{ width: 600 }}
           />
         </Box>
@@ -74,22 +74,16 @@ const JourneysList = () => {
 
   return (
     <div>
-      <h2>Helsinki city bike journeys</h2>
+      <h2>Journeys</h2>
       <Box>
         <TextField
           id="search"
           type="search"
           label="Search departure station by name"
           value={searchTerm}
-          onChange={({ target }) => setSearchTerm(target.value)}
+          onChange={handleSearch}
           sx={{ width: 600 }}
         />
-      </Box>
-      <Box style={{ paddingTop: 5 }}>
-        <p>clear sorting before searching</p>
-        <Button id="clear" variant="contained" onClick={handleClick}>
-          clear sorting
-        </Button>
       </Box>
       <JourneysData
         journeys={journeys}
