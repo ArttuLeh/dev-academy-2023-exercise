@@ -21,20 +21,16 @@ export const initializeJourneys = (
   searchTerm
 ) => {
   return async (dispatch) => {
-    try {
-      // call axios
-      const data = await journeyService.getAll(
-        currentPage,
-        sortField,
-        sortOrder,
-        searchTerm
-      )
-      dispatch(toggleLoading(false))
-      dispatch(setJourneys(data))
-      dispatch(toggleLoading(true))
-    } catch (error) {
-      console.error(error.message)
-    }
+    // call axios
+    const data = await journeyService.getAll(
+      currentPage,
+      sortField,
+      sortOrder,
+      searchTerm
+    )
+    dispatch(toggleLoading(false))
+    dispatch(setJourneys(data))
+    dispatch(toggleLoading(true))
   }
 }
 export const { setJourneys } = journeysSlice.actions
