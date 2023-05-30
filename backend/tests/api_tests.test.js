@@ -41,7 +41,7 @@ describe('api tests', () => {
       const station = response.body.data
       expect(station).toHaveLength(1)
       expect(station[0]._id).toBeDefined()
-      expect(station[0].Nimi).toBe('Keilalahti')
+      expect(station[0].name).toBe('Keilalahti')
     })
     test('if search not found', async () => {
       const response = await api
