@@ -55,6 +55,7 @@ const JourneysList = () => {
         <h2>Helsinki city bike journeys</h2>
         <Box>
           <TextField
+            id="search"
             type="search"
             label="Search departure station by name"
             value={searchTerm}
@@ -76,6 +77,7 @@ const JourneysList = () => {
       <h2>Helsinki city bike journeys</h2>
       <Box>
         <TextField
+          id="search"
           type="search"
           label="Search departure station by name"
           value={searchTerm}
@@ -85,7 +87,7 @@ const JourneysList = () => {
       </Box>
       <Box style={{ paddingTop: 5 }}>
         <p>clear sorting before searching</p>
-        <Button variant="contained" onClick={handleClick}>
+        <Button id="clear" variant="contained" onClick={handleClick}>
           clear sorting
         </Button>
       </Box>
