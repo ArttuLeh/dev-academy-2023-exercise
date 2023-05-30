@@ -12,7 +12,10 @@ import {
   TableHead,
   Box,
   CircularProgress,
+  Alert,
+  AlertTitle,
 } from '@mui/material'
+import { toggleLoading } from '../reducers/loadingReducer'
 
 // component that show the station information
 // using material ui
@@ -24,45 +27,85 @@ const StationView = () => {
 
   useEffect(() => {
     // dispatch the id to the reducer everytime whenever id change
+    dispatch(toggleLoading(false))
     dispatch(getStation(id))
   }, [dispatch, id])
 
+  const headCell = [
+    {
+      id: 'Osoite',
+      numeric: false,
+      lable: 'Address',
+    },
+    {
+      id: 'ID',
+      numeric: true,
+      lable: 'Station ID',
+    },
+    {
+      id: 'departureStationCount',
+      numeric: true,
+      lable: 'Departure Station Count',
+    },
+    {
+      id: 'seturnStationCount',
+      numeric: true,
+      lable: 'Return Station Count',
+    },
+    {
+      id: 'departureStationDistance',
+      numeric: true,
+      lable: 'Average distance of starting from the station (km)',
+    },
+    {
+      id: 'returnStationDistance',
+      numeric: true,
+      lable: 'Average distance ending at the station (km)',
+    },
+    {
+      id: 'sortDepartureStation',
+      numeric: true,
+      lable:
+        'most popular return stations for journeys starting from the station',
+    },
+    {
+      id: 'sortReturnStation',
+      numeric: true,
+      lable:
+        'most popular departure stations or journeys ending at the station',
+    },
+  ]
+
+  if (isLoading && station.success === false) {
+    return (
+      <div>
+        <Alert severity="error">
+          <AlertTitle>Information not found</AlertTitle>
+        </Alert>
+      </div>
+    )
+  }
   return (
     <div>
-      {isLoading ? (
+      {isLoading && station.data ? (
         <TableContainer component={Paper}>
           <h2>{station.data.Nimi} station information</h2>
           <Table>
             <TableHead>
-              <TableRow sx={{ boxShadow: 2 }}>
-                <TableCell sx={{ fontWeight: 'bold' }}>Address</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  Station ID
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  Departure Station Count
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  Return Station Count
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  Average distance of starting from the station (km)
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  Average distance ending at the station (km)
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  most popular return stations for journeys starting from the
-                  station
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                  most popular departure stations or journeys ending at the
-                  station
-                </TableCell>
+              <TableRow sx={{ boxShadow: 4 }}>
+                {headCell.map((headCell) => (
+                  <TableCell
+                    key={headCell.id}
+                    sx={{ fontWeight: 'bold' }}
+                    align={headCell.numeric ? 'right' : 'left'}
+                  >
+                    {headCell.lable}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow sx={{ boxShadow: 2 }}>
+              <TableRow sx={{ boxShadow: 4 }}>
                 <TableCell>{station.data.Osoite}</TableCell>
                 <TableCell align="right">{station.data.ID}</TableCell>
                 <TableCell align="right">
@@ -85,14 +128,14 @@ const StationView = () => {
                 <TableCell align="right">
                   {station.sortDepartureStation.map((s) => (
                     <li key={s._id}>
-                      {s.count}, station Name: {s._id}
+                      {s.count}, station name: {s._id}
                     </li>
                   ))}
                 </TableCell>
                 <TableCell align="right">
                   {station.sortReturnStation.map((s) => (
                     <li key={s._id}>
-                      {s.count}, station Name: {s._id}
+                      {s.count}, station name: {s._id}
                     </li>
                   ))}
                 </TableCell>
