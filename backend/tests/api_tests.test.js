@@ -20,6 +20,7 @@ describe('api tests', () => {
         .get('/api/stations')
         .expect(200)
         .expect('Content-Type', /application\/json/)
+
       expect(response.body.data).toHaveLength(helper.initialStations.length)
     })
     test('a station data has field id', async () => {
@@ -29,8 +30,47 @@ describe('api tests', () => {
         .expect('Content-Type', /application\/json/)
 
       const station = response.body.data[0]
-
       expect(station._id).toBeDefined()
+    })
+    test('search specific station', async () => {
+      const response = await api
+        .get('/api/stations?search=keilalahti')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const station = response.body.data
+      expect(station).toHaveLength(1)
+      expect(station[0]._id).toBeDefined()
+      expect(station[0].Nimi).toBe('Keilalahti')
+    })
+    test('if search not found', async () => {
+      const response = await api
+        .get('/api/stations?search=keillahti')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const station = response.body
+      expect(station.success).toBe(false)
+    })
+    describe('test page change', () => {
+      test('page 1, should gave three object', async () => {
+        const response = await api
+          .get('/api/stations?page=1&limit=3')
+          .expect(200)
+          .expect('Content-Type', /application\/json/)
+
+        const stations = response.body.data
+        expect(stations).toHaveLength(3)
+      })
+      test('page 2, should have two object', async () => {
+        const response = await api
+          .get('/api/stations?page=2&limit=3')
+          .expect(200)
+          .expect('Content-Type', /application\/json/)
+
+        const stations = response.body.data
+        expect(stations).toHaveLength(2)
+      })
     })
   })
 
@@ -90,8 +130,9 @@ describe('api tests', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
+      const station = response.body.data
       const processedStationToView = JSON.parse(JSON.stringify(stationToView))
-      expect(response.body.data).toEqual(processedStationToView)
+      expect(station).toEqual(processedStationToView)
     })
     test('total number of journeys starting from the station and ending to the station', async () => {
       const stations = await helper.stationsInDb()
