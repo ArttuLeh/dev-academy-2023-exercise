@@ -32,7 +32,7 @@ const StationList = () => {
   if (searchTerm) {
     return (
       <div>
-        <h2>Helsinki city bike stations</h2>
+        <h2>Stations</h2>
         <Box>
           <TextField
             id="search"
@@ -52,7 +52,7 @@ const StationList = () => {
   }
   return (
     <div>
-      <h2>Helsinki city bike stations</h2>
+      <h2>Stations</h2>
       <Box>
         <TextField
           id="search"
