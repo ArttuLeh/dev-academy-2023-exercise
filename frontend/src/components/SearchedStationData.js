@@ -20,12 +20,12 @@ const SearchedStationsData = ({ stations }) => {
   // array of objects for table cell
   const headCell = [
     {
-      id: 'Nimi',
+      id: 'name',
       numeric: false,
       label: 'Station name',
     },
     {
-      id: 'Osoite',
+      id: 'address',
       numeric: true,
       label: 'Address',
     },
@@ -41,7 +41,9 @@ const SearchedStationsData = ({ stations }) => {
     return (
       <div>
         <Alert severity="error">
-          <AlertTitle>Information not found</AlertTitle>
+          <AlertTitle>
+            Information not found, try again a different name
+          </AlertTitle>
         </Alert>
       </div>
     )
@@ -69,10 +71,10 @@ const SearchedStationsData = ({ stations }) => {
               {stations.data.map((station) => (
                 <TableRow key={station._id} sx={{ boxShadow: 4 }}>
                   <TableCell className="row">
-                    <Link to={`/stations/${station._id}`}>{station.Nimi}</Link>
+                    <Link to={`/stations/${station._id}`}>{station.name}</Link>
                   </TableCell>
                   <TableCell align="right">
-                    {station.Osoite} {station.Kaupunki}
+                    {station.address} {station.town}
                   </TableCell>
                   <TableCell align="right">{station.ID}</TableCell>
                 </TableRow>
