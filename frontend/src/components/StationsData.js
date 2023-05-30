@@ -19,12 +19,12 @@ const StationData = ({ stations, handlePageChange }) => {
 
   const headCell = [
     {
-      id: 'Nimi',
+      id: 'name',
       numeric: false,
       label: 'Station name',
     },
     {
-      id: 'Osoite',
+      id: 'address',
       numeric: true,
       label: 'Address',
     },
@@ -34,7 +34,7 @@ const StationData = ({ stations, handlePageChange }) => {
       label: 'Station ID',
     },
   ]
-
+  console.log(stations)
   return (
     <div>
       {isLoading && stations.data ? (
@@ -57,10 +57,10 @@ const StationData = ({ stations, handlePageChange }) => {
               {stations.data.map((station) => (
                 <TableRow key={station._id} sx={{ boxShadow: 4 }}>
                   <TableCell>
-                    <Link to={`/stations/${station._id}`}>{station.Nimi}</Link>
+                    <Link to={`/stations/${station._id}`}>{station.name}</Link>
                   </TableCell>
                   <TableCell align="right">
-                    {station.Osoite} {station.Kaupunki}
+                    {station.address} {station.town}
                   </TableCell>
                   <TableCell align="right">{station.ID}</TableCell>
                 </TableRow>
