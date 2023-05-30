@@ -10,6 +10,7 @@ journeyRouter.get('/', async (req, res, next) => {
 
   try {
     let sortedData
+
     //counting documents for pagination
     const count = await Journeys.countDocuments()
 
