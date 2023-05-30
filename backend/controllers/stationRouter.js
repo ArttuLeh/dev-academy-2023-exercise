@@ -9,7 +9,7 @@ stationsRouter.get('/', async (req, res, next) => {
 
   try {
     // search the data and paginate the data
-    const data = await Station.find({ Nimi: { $regex: search, $options: 'i' } })
+    const data = await Station.find({ name: { $regex: search, $options: 'i' } })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec()
