@@ -1,9 +1,9 @@
 const Home = () => {
   return (
     <div>
-      <h2>Welcome Helsinki city bike app</h2>
+      <h2>Helsinki City Bike app</h2>
       <p>
-        Here you can browse information about Helsinki city bike stations and
+        Here you can browse informations about Helsinki City Bike stations and
         journeys.
       </p>
     </div>
