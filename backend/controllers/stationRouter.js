@@ -5,21 +5,28 @@ const Journey = require('../models/journey')
 // router which fetch all stations data from database
 stationsRouter.get('/', async (req, res, next) => {
   const { page = 1, limit = 40 } = req.query
+  const search = req.query.search || ''
 
   try {
     // search the data and paginate the data
-    const data = await Station.find({})
+    const data = await Station.find({ Nimi: { $regex: search, $options: 'i' } })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec()
 
-    // counts all documents for pagination
-    const count = await Station.countDocuments()
-    res.json({
-      data,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-    })
+    if (data.length === 0) {
+      //if searched data not found
+      res.json({ success: false })
+    } else {
+      // counts all documents for pagination
+      const count = await Station.countDocuments()
+      res.json({
+        success: true,
+        data,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      })
+    }
   } catch (error) {
     // convey error to middleware
     next(error)
@@ -122,16 +129,24 @@ stationsRouter.get('/:id', async (req, res, next) => {
         $limit: 5,
       },
     ])
-    //return object that contains all the data
-    res.json({
-      data,
-      sortDepartureStation,
-      sortReturnStation,
-      departureStationDistance,
-      returnStationDistance,
-      departureStationCount,
-      returnStationCount,
-    })
+    if (departureStationCount === 0 || returnStationCount === 0) {
+      res.json({
+        success: false,
+        data,
+      })
+    } else {
+      //return object that contains all the data
+      res.json({
+        success: true,
+        data,
+        sortDepartureStation,
+        sortReturnStation,
+        departureStationDistance,
+        returnStationDistance,
+        departureStationCount,
+        returnStationCount,
+      })
+    }
   } catch (error) {
     next(error)
   }
