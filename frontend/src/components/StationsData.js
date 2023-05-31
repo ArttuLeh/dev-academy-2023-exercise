@@ -34,7 +34,7 @@ const StationData = ({ stations, handlePageChange }) => {
       label: 'Station ID',
     },
   ]
-  console.log(stations)
+
   return (
     <div>
       {isLoading && stations.data ? (

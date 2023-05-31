@@ -9,26 +9,25 @@ journeyRouter.get('/', async (req, res, next) => {
   const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1
 
   try {
-    let sortedData
-
+    let data
     //counting documents for pagination
     const count = await Journeys.countDocuments()
 
     if (sortField) {
       // if a sortfield is given, this will find and sort and paginate all journeys
-      sortedData = await Journeys.find({})
+      data = await Journeys.find({})
         .sort({ [sortField]: sortOrder })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec()
       res.json({
-        sortedData,
+        data,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
       })
     } else if (search) {
-      // if a search value is given, this will find all journeys that match the value
-      sortedData = await Journeys.aggregate([
+      // if a search query is given, this will find all journeys that match the query
+      data = await Journeys.aggregate([
         {
           $match: {
             Departure_station_name: { $regex: search, $options: 'i' },
@@ -36,7 +35,7 @@ journeyRouter.get('/', async (req, res, next) => {
         },
         {
           $facet: {
-            metadata: [
+            pageData: [
               { $count: 'total' },
               {
                 $addFields: { currentPage: page },
@@ -46,29 +45,29 @@ journeyRouter.get('/', async (req, res, next) => {
           },
         },
       ])
-      if (sortedData[0].metadata.length === 0) {
+      if (data[0].pageData.length === 0) {
         // if there aren't journeys that match the value, send the info to the user
         res.json({ success: false })
       } else {
         // if journey found, send the paginated data
-        const totalPages = Math.ceil(sortedData[0].metadata[0].total / limit)
-        const currentPage = sortedData[0].metadata[0].currentPage
+        const totalPages = Math.ceil(data[0].pageData[0].total / limit)
+        const currentPage = data[0].pageData[0].currentPage
         res.json({
           success: true,
-          sortedData,
+          data,
           totalPages: totalPages,
           currentPage: currentPage,
         })
       }
     } else {
-      // if no value is given, send all the paginated data
-      sortedData = await Journeys.find()
+      // if no query is given, send all the paginated data
+      data = await Journeys.find({})
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec()
 
       res.json({
-        sortedData,
+        data,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
       })

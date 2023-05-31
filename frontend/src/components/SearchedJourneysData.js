@@ -63,7 +63,7 @@ const SearchedJourneysData = ({ journeys, handlePageChange }) => {
 
   return (
     <div>
-      {isLoading && journeys.sortedData[0].data ? (
+      {isLoading && journeys.data[0].data ? (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -80,7 +80,7 @@ const SearchedJourneysData = ({ journeys, handlePageChange }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {journeys.sortedData[0].data.map((journey) => (
+              {journeys.data[0].data.map((journey) => (
                 <TableRow key={journey._id} sx={{ boxShadow: 4 }}>
                   <TableCell>{journey.Departure_station_id}</TableCell>
                   <TableCell className="row" align="right">

@@ -55,7 +55,7 @@ const JourneysData = ({
 
   return (
     <div>
-      {isLoading && journeys.sortedData ? (
+      {isLoading && journeys.data ? (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -78,7 +78,7 @@ const JourneysData = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {journeys.sortedData.map((journey) => (
+              {journeys.data.map((journey) => (
                 <TableRow key={journey._id} sx={{ boxShadow: 4 }}>
                   <TableCell>{journey.Departure_station_id}</TableCell>
                   <TableCell align="right">
