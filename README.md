@@ -1,4 +1,5 @@
 # Solita dev academy 2023 exercise
+https://github.com/solita/dev-academy-2023-exercise
 # Web App
 
 This is a web application built with React for the frontend, Node.js for the backend, and MongoDB for the database. Follow the instructions below to set up and run the app locally.
